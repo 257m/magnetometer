@@ -46,6 +46,12 @@
 SPI_HandleTypeDef hspi2;
 
 UART_HandleTypeDef huart2;
+int _write(int file, char *ptr, int len)
+{
+    HAL_UART_Transmit(&huart2, (uint8_t *)ptr, len, HAL_MAX_DELAY);
+    return len;
+}
+/* USER CODE END 4 */
 
 /* USER CODE BEGIN PV */
 
@@ -110,7 +116,8 @@ int main(void)
     /* USER CODE END WHILE */
     float xyz[3];
     LIS2MDL_Read_mgauss(xyz);
-    printf("%f %f %f\r\n", xyz[0], xyz[1], xyz[2]);
+    //printf("%f %f %f\r\n", xyz[0], xyz[1], xyz[2]);
+    printf("%d %d %d\r\n", (int)xyz[0], (int)xyz[1], (int)xyz[2]);
     HAL_Delay(100);
 
     /* USER CODE BEGIN 3 */
