@@ -19,6 +19,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "lis2mdl.h"
+#include "stm32f4xx_hal.h"
 #include <stdio.h>
 
 /* Private includes ----------------------------------------------------------*/
@@ -101,6 +102,8 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  printf("Hello\r\n");
+  HAL_Delay(100);
   LIS2MDL_Init();
   while (1)
   {
@@ -108,6 +111,7 @@ int main(void)
     float xyz[3];
     LIS2MDL_Read_mgauss(xyz);
     printf("%f %f %f\r\n", xyz[0], xyz[1], xyz[2]);
+    HAL_Delay(100);
 
     /* USER CODE BEGIN 3 */
   }
