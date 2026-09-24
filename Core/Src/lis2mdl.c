@@ -4,6 +4,7 @@
 #include "stm32f4xx_hal_gpio.h"
 #include "stm32f4xx_hal_spi.h"
 #include <stdint.h>
+#include <stdio.h>
 
 static inline void LIS2MDL_CS_LOW(void) {
 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
@@ -20,6 +21,8 @@ HAL_StatusTypeDef LIS2MDL_Read(uint8_t reg, uint8_t* buf, uint16_t n) {
 	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, &cmd, 1, 10);
 	if (status == HAL_OK)
 		status = HAL_SPI_Receive(&hspi2, buf, n, 10);
+	else
+		printf("HAL status: %d\r\n", status);
 	LIS2MDL_CS_HIGH();
 	return status;
 }
@@ -28,7 +31,9 @@ HAL_StatusTypeDef LIS2MDL_Write(uint8_t reg, uint8_t val) {
 	// Write command and value
 	uint8_t tx[2] = {reg & 0x7F, val };
 	LIS2MDL_CS_LOW();
-	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, tx, 1, 10);
+	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, tx, 2, 10);
+	if (status != HAL_OK)
+		printf("HAL status: %d\r\n", status);
 	LIS2MDL_CS_HIGH();
 	return status;
 }
@@ -44,7 +49,11 @@ int LIS2MDL_Init() {
 	
 	// Makes sure correct who am i is returned. if incorrect this is the wrong chip
 	uint8_t id = 0;
-	if (LIS2MDL_Read(WHO_AM_I, &id, 1) != HAL_OK || id != 0x40) return -1;
+	if (LIS2MDL_Read(WHO_AM_I, &id, 1) != HAL_OK || id != 0x40) {
+		printf("WHO_AM_I incorrect: %d\r\n", id);
+		return -1;
+	}
+	printf("WHO_AM_I correct\r\n");
 
 	// Enables temperature compensation, 100 Hz output data rate, Continous mode (data will be placed in register constantly)
 	LIS2MDL_Write(CFG_REG_A, 0x8C); // COMP_TEMP_EN | ODR1 | ODR1

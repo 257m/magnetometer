@@ -1,4 +1,4 @@
-ARM GAS  /tmp/ccKa5HX9.s 			page 1
+ARM GAS  /tmp/ccXQSXhk.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -20,530 +20,604 @@ ARM GAS  /tmp/ccKa5HX9.s 			page 1
   17              	.Ltext0:
   18              		.cfi_sections	.debug_frame
   19              		.file 1 "Core/Src/lis2mdl.c"
-  20              		.section	.text.LIS2MDL_Read,"ax",%progbits
-  21              		.align	1
-  22              		.global	LIS2MDL_Read
-  23              		.syntax unified
-  24              		.thumb
-  25              		.thumb_func
-  27              	LIS2MDL_Read:
-  28              	.LVL0:
-  29              	.LFB136:
+  20              		.section	.rodata.LIS2MDL_Read.str1.4,"aMS",%progbits,1
+  21              		.align	2
+  22              	.LC0:
+  23 0000 48414C20 		.ascii	"HAL status: %d\015\012\000"
+  23      73746174 
+  23      75733A20 
+  23      25640D0A 
+  23      00
+  24              		.section	.text.LIS2MDL_Read,"ax",%progbits
+  25              		.align	1
+  26              		.global	LIS2MDL_Read
+  27              		.syntax unified
+  28              		.thumb
+  29              		.thumb_func
+  31              	LIS2MDL_Read:
+  32              	.LVL0:
+  33              	.LFB139:
    1:Core/Src/lis2mdl.c **** #include "lis2mdl.h"
    2:Core/Src/lis2mdl.c **** #include "stm32f4xx_hal.h"
    3:Core/Src/lis2mdl.c **** #include "stm32f4xx_hal_def.h"
    4:Core/Src/lis2mdl.c **** #include "stm32f4xx_hal_gpio.h"
    5:Core/Src/lis2mdl.c **** #include "stm32f4xx_hal_spi.h"
    6:Core/Src/lis2mdl.c **** #include <stdint.h>
-   7:Core/Src/lis2mdl.c **** 
-   8:Core/Src/lis2mdl.c **** static inline void LIS2MDL_CS_LOW(void) {
+   7:Core/Src/lis2mdl.c **** #include <stdio.h>
+   8:Core/Src/lis2mdl.c **** 
+   9:Core/Src/lis2mdl.c **** static inline void LIS2MDL_CS_LOW(void) {
+  10:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
+  11:Core/Src/lis2mdl.c **** }
+  12:Core/Src/lis2mdl.c **** 
+  13:Core/Src/lis2mdl.c **** static inline void LIS2MDL_CS_HIGH(void) {
+  14:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
+  15:Core/Src/lis2mdl.c **** }
+  16:Core/Src/lis2mdl.c **** 
+  17:Core/Src/lis2mdl.c **** HAL_StatusTypeDef LIS2MDL_Read(uint8_t reg, uint8_t* buf, uint16_t n) {
+  34              		.loc 1 17 71 view -0
+  35              		.cfi_startproc
+  36              		@ args = 0, pretend = 0, frame = 8
+  37              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  /tmp/ccXQSXhk.s 			page 2
+
+
+  38              		.loc 1 17 71 is_stmt 0 view .LVU1
+  39 0000 70B5     		push	{r4, r5, r6, lr}
+  40              	.LCFI0:
+  41              		.cfi_def_cfa_offset 16
+  42              		.cfi_offset 4, -16
+  43              		.cfi_offset 5, -12
+  44              		.cfi_offset 6, -8
+  45              		.cfi_offset 14, -4
+  46 0002 82B0     		sub	sp, sp, #8
+  47              	.LCFI1:
+  48              		.cfi_def_cfa_offset 24
+  49 0004 0D46     		mov	r5, r1
+  50 0006 1446     		mov	r4, r2
+  18:Core/Src/lis2mdl.c **** 	// Read command
+  19:Core/Src/lis2mdl.c **** 	uint8_t cmd = reg | 0x80;
+  51              		.loc 1 19 2 is_stmt 1 view .LVU2
+  52              		.loc 1 19 10 is_stmt 0 view .LVU3
+  53 0008 60F07F00 		orn	r0, r0, #127
+  54              	.LVL1:
+  55              		.loc 1 19 10 view .LVU4
+  56 000c 8DF80700 		strb	r0, [sp, #7]
+  20:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_LOW();
+  57              		.loc 1 20 2 is_stmt 1 view .LVU5
+  58              	.LBB12:
+  59              	.LBI12:
    9:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
+  60              		.loc 1 9 20 view .LVU6
+  61              	.LBB13:
   10:Core/Src/lis2mdl.c **** }
-  11:Core/Src/lis2mdl.c **** 
-  12:Core/Src/lis2mdl.c **** static inline void LIS2MDL_CS_HIGH(void) {
-  13:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
-  14:Core/Src/lis2mdl.c **** }
-  15:Core/Src/lis2mdl.c **** 
-  16:Core/Src/lis2mdl.c **** HAL_StatusTypeDef LIS2MDL_Read(uint8_t reg, uint8_t* buf, uint16_t n) {
-  30              		.loc 1 16 71 view -0
-  31              		.cfi_startproc
-  32              		@ args = 0, pretend = 0, frame = 8
-  33              		@ frame_needed = 0, uses_anonymous_args = 0
-  34              		.loc 1 16 71 is_stmt 0 view .LVU1
-  35 0000 70B5     		push	{r4, r5, r6, lr}
-  36              	.LCFI0:
-  37              		.cfi_def_cfa_offset 16
-  38              		.cfi_offset 4, -16
-  39              		.cfi_offset 5, -12
-  40              		.cfi_offset 6, -8
-  41              		.cfi_offset 14, -4
-  42 0002 82B0     		sub	sp, sp, #8
-ARM GAS  /tmp/ccKa5HX9.s 			page 2
+  62              		.loc 1 10 2 view .LVU7
+  63 0010 0022     		movs	r2, #0
+  64              	.LVL2:
+  10:Core/Src/lis2mdl.c **** }
+  65              		.loc 1 10 2 is_stmt 0 view .LVU8
+  66 0012 4021     		movs	r1, #64
+  67              	.LVL3:
+  10:Core/Src/lis2mdl.c **** }
+  68              		.loc 1 10 2 view .LVU9
+  69 0014 0F48     		ldr	r0, .L5
+  70 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  71              	.LVL4:
+  72              	.LBE13:
+  73              	.LBE12:
+  21:Core/Src/lis2mdl.c **** 	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, &cmd, 1, 10);
+  74              		.loc 1 21 2 is_stmt 1 view .LVU10
+  75              		.loc 1 21 29 is_stmt 0 view .LVU11
+  76 001a 0A23     		movs	r3, #10
+  77 001c 0122     		movs	r2, #1
+  78 001e 0DF10701 		add	r1, sp, #7
+  79 0022 0D48     		ldr	r0, .L5+4
+  80 0024 FFF7FEFF 		bl	HAL_SPI_Transmit
+  81              	.LVL5:
+  22:Core/Src/lis2mdl.c **** 	if (status == HAL_OK)
+  82              		.loc 1 22 2 is_stmt 1 view .LVU12
+  83              		.loc 1 22 5 is_stmt 0 view .LVU13
+  84 0028 70B9     		cbnz	r0, .L2
+  23:Core/Src/lis2mdl.c **** 		status = HAL_SPI_Receive(&hspi2, buf, n, 10);
+ARM GAS  /tmp/ccXQSXhk.s 			page 3
 
 
-  43              	.LCFI1:
-  44              		.cfi_def_cfa_offset 24
-  45 0004 0D46     		mov	r5, r1
-  46 0006 1646     		mov	r6, r2
-  17:Core/Src/lis2mdl.c **** 	// Read command
-  18:Core/Src/lis2mdl.c **** 	uint8_t cmd = reg | 0x80;
-  47              		.loc 1 18 2 is_stmt 1 view .LVU2
-  48              		.loc 1 18 10 is_stmt 0 view .LVU3
-  49 0008 60F07F00 		orn	r0, r0, #127
-  50              	.LVL1:
-  51              		.loc 1 18 10 view .LVU4
-  52 000c 8DF80700 		strb	r0, [sp, #7]
-  19:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_LOW();
-  53              		.loc 1 19 2 is_stmt 1 view .LVU5
-  54              	.LBB12:
-  55              	.LBI12:
-   8:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
-  56              		.loc 1 8 20 view .LVU6
-  57              	.LBB13:
-   9:Core/Src/lis2mdl.c **** }
-  58              		.loc 1 9 2 view .LVU7
-  59 0010 0022     		movs	r2, #0
-  60              	.LVL2:
-   9:Core/Src/lis2mdl.c **** }
-  61              		.loc 1 9 2 is_stmt 0 view .LVU8
-  62 0012 4021     		movs	r1, #64
-  63              	.LVL3:
-   9:Core/Src/lis2mdl.c **** }
-  64              		.loc 1 9 2 view .LVU9
-  65 0014 0D48     		ldr	r0, .L5
-  66 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
-  67              	.LVL4:
-  68              	.LBE13:
-  69              	.LBE12:
-  20:Core/Src/lis2mdl.c **** 	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, &cmd, 1, 10);
-  70              		.loc 1 20 2 is_stmt 1 view .LVU10
-  71              		.loc 1 20 29 is_stmt 0 view .LVU11
-  72 001a 0A23     		movs	r3, #10
-  73 001c 0122     		movs	r2, #1
-  74 001e 0DF10701 		add	r1, sp, #7
-  75 0022 0B48     		ldr	r0, .L5+4
-  76 0024 FFF7FEFF 		bl	HAL_SPI_Transmit
-  77              	.LVL5:
-  21:Core/Src/lis2mdl.c **** 	if (status == HAL_OK)
-  78              		.loc 1 21 2 is_stmt 1 view .LVU12
-  79              		.loc 1 21 5 is_stmt 0 view .LVU13
-  80 0028 0446     		mov	r4, r0
-  81 002a 38B1     		cbz	r0, .L4
-  82              	.LVL6:
-  83              	.L2:
-  22:Core/Src/lis2mdl.c **** 		status = HAL_SPI_Receive(&hspi2, buf, n, 10);
-  23:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
-  84              		.loc 1 23 2 is_stmt 1 view .LVU14
-  85              	.LBB14:
-  86              	.LBI14:
-  12:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
-  87              		.loc 1 12 20 view .LVU15
-ARM GAS  /tmp/ccKa5HX9.s 			page 3
-
-
-  88              	.LBB15:
-  13:Core/Src/lis2mdl.c **** }
-  89              		.loc 1 13 2 view .LVU16
-  90 002c 0122     		movs	r2, #1
-  91 002e 4021     		movs	r1, #64
-  92 0030 0648     		ldr	r0, .L5
-  93 0032 FFF7FEFF 		bl	HAL_GPIO_WritePin
+  85              		.loc 1 23 3 is_stmt 1 view .LVU14
+  86              		.loc 1 23 12 is_stmt 0 view .LVU15
+  87 002a 0A23     		movs	r3, #10
+  88 002c 2246     		mov	r2, r4
+  89 002e 2946     		mov	r1, r5
+  90 0030 0948     		ldr	r0, .L5+4
+  91              	.LVL6:
+  92              		.loc 1 23 12 view .LVU16
+  93 0032 FFF7FEFF 		bl	HAL_SPI_Receive
   94              	.LVL7:
-  95              	.LBE15:
-  96              	.LBE14:
-  24:Core/Src/lis2mdl.c **** 	return status;
-  97              		.loc 1 24 2 view .LVU17
-  25:Core/Src/lis2mdl.c **** }
-  98              		.loc 1 25 1 is_stmt 0 view .LVU18
-  99 0036 2046     		mov	r0, r4
- 100 0038 02B0     		add	sp, sp, #8
- 101              	.LCFI2:
- 102              		.cfi_remember_state
- 103              		.cfi_def_cfa_offset 16
- 104              		@ sp needed
- 105 003a 70BD     		pop	{r4, r5, r6, pc}
- 106              	.LVL8:
- 107              	.L4:
- 108              	.LCFI3:
- 109              		.cfi_restore_state
-  22:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 110              		.loc 1 22 3 is_stmt 1 view .LVU19
-  22:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 111              		.loc 1 22 12 is_stmt 0 view .LVU20
- 112 003c 0A23     		movs	r3, #10
- 113 003e 3246     		mov	r2, r6
- 114 0040 2946     		mov	r1, r5
- 115 0042 0348     		ldr	r0, .L5+4
- 116              	.LVL9:
-  22:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 117              		.loc 1 22 12 view .LVU21
- 118 0044 FFF7FEFF 		bl	HAL_SPI_Receive
- 119              	.LVL10:
- 120 0048 0446     		mov	r4, r0
- 121              	.LVL11:
-  22:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 122              		.loc 1 22 12 view .LVU22
- 123 004a EFE7     		b	.L2
- 124              	.L6:
- 125              		.align	2
- 126              	.L5:
- 127 004c 00040240 		.word	1073873920
- 128 0050 00000000 		.word	hspi2
- 129              		.cfi_endproc
- 130              	.LFE136:
- 132              		.section	.text.LIS2MDL_Write,"ax",%progbits
- 133              		.align	1
- 134              		.global	LIS2MDL_Write
- 135              		.syntax unified
- 136              		.thumb
- 137              		.thumb_func
- 139              	LIS2MDL_Write:
-ARM GAS  /tmp/ccKa5HX9.s 			page 4
+  95 0036 0646     		mov	r6, r0
+  96              	.LVL8:
+  97              	.L3:
+  24:Core/Src/lis2mdl.c **** 	else
+  25:Core/Src/lis2mdl.c **** 		printf("HAL status: %d\r\n", status);
+  26:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+  98              		.loc 1 26 2 is_stmt 1 view .LVU17
+  99              	.LBB14:
+ 100              	.LBI14:
+  13:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
+ 101              		.loc 1 13 20 view .LVU18
+ 102              	.LBB15:
+  14:Core/Src/lis2mdl.c **** }
+ 103              		.loc 1 14 2 view .LVU19
+ 104 0038 0122     		movs	r2, #1
+ 105 003a 4021     		movs	r1, #64
+ 106 003c 0548     		ldr	r0, .L5
+ 107 003e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 108              	.LVL9:
+ 109              	.LBE15:
+ 110              	.LBE14:
+  27:Core/Src/lis2mdl.c **** 	return status;
+ 111              		.loc 1 27 2 view .LVU20
+  28:Core/Src/lis2mdl.c **** }
+ 112              		.loc 1 28 1 is_stmt 0 view .LVU21
+ 113 0042 3046     		mov	r0, r6
+ 114 0044 02B0     		add	sp, sp, #8
+ 115              	.LCFI2:
+ 116              		.cfi_remember_state
+ 117              		.cfi_def_cfa_offset 16
+ 118              		@ sp needed
+ 119 0046 70BD     		pop	{r4, r5, r6, pc}
+ 120              	.LVL10:
+ 121              	.L2:
+ 122              	.LCFI3:
+ 123              		.cfi_restore_state
+ 124              		.loc 1 28 1 view .LVU22
+ 125 0048 0646     		mov	r6, r0
+  25:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+ 126              		.loc 1 25 3 is_stmt 1 view .LVU23
+ 127 004a 0146     		mov	r1, r0
+ 128 004c 0348     		ldr	r0, .L5+8
+ 129              	.LVL11:
+  25:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+ 130              		.loc 1 25 3 is_stmt 0 view .LVU24
+ 131 004e FFF7FEFF 		bl	printf
+ 132              	.LVL12:
+ARM GAS  /tmp/ccXQSXhk.s 			page 4
 
 
- 140              	.LVL12:
- 141              	.LFB137:
-  26:Core/Src/lis2mdl.c **** 
-  27:Core/Src/lis2mdl.c **** HAL_StatusTypeDef LIS2MDL_Write(uint8_t reg, uint8_t val) {
- 142              		.loc 1 27 59 is_stmt 1 view -0
- 143              		.cfi_startproc
- 144              		@ args = 0, pretend = 0, frame = 8
- 145              		@ frame_needed = 0, uses_anonymous_args = 0
- 146              		.loc 1 27 59 is_stmt 0 view .LVU24
- 147 0000 30B5     		push	{r4, r5, lr}
- 148              	.LCFI4:
- 149              		.cfi_def_cfa_offset 12
- 150              		.cfi_offset 4, -12
- 151              		.cfi_offset 5, -8
- 152              		.cfi_offset 14, -4
- 153 0002 83B0     		sub	sp, sp, #12
- 154              	.LCFI5:
- 155              		.cfi_def_cfa_offset 24
-  28:Core/Src/lis2mdl.c **** 	// Write command and value
-  29:Core/Src/lis2mdl.c **** 	uint8_t tx[2] = {reg & 0x7F, val };
- 156              		.loc 1 29 2 is_stmt 1 view .LVU25
- 157              		.loc 1 29 23 is_stmt 0 view .LVU26
- 158 0004 00F07F00 		and	r0, r0, #127
- 159              	.LVL13:
- 160              		.loc 1 29 10 view .LVU27
- 161 0008 8DF80400 		strb	r0, [sp, #4]
- 162 000c 8DF80510 		strb	r1, [sp, #5]
-  30:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_LOW();
- 163              		.loc 1 30 2 is_stmt 1 view .LVU28
- 164              	.LBB16:
- 165              	.LBI16:
-   8:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
- 166              		.loc 1 8 20 view .LVU29
- 167              	.LBB17:
-   9:Core/Src/lis2mdl.c **** }
- 168              		.loc 1 9 2 view .LVU30
- 169 0010 0A4C     		ldr	r4, .L9
- 170 0012 0022     		movs	r2, #0
- 171 0014 4021     		movs	r1, #64
- 172              	.LVL14:
-   9:Core/Src/lis2mdl.c **** }
- 173              		.loc 1 9 2 is_stmt 0 view .LVU31
- 174 0016 2046     		mov	r0, r4
- 175 0018 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 176              	.LVL15:
-   9:Core/Src/lis2mdl.c **** }
- 177              		.loc 1 9 2 view .LVU32
- 178              	.LBE17:
- 179              	.LBE16:
-  31:Core/Src/lis2mdl.c **** 	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, tx, 1, 10);
- 180              		.loc 1 31 2 is_stmt 1 view .LVU33
- 181              		.loc 1 31 29 is_stmt 0 view .LVU34
- 182 001c 0A23     		movs	r3, #10
- 183 001e 0122     		movs	r2, #1
- 184 0020 01A9     		add	r1, sp, #4
- 185 0022 0748     		ldr	r0, .L9+4
- 186 0024 FFF7FEFF 		bl	HAL_SPI_Transmit
-ARM GAS  /tmp/ccKa5HX9.s 			page 5
+ 133 0052 F1E7     		b	.L3
+ 134              	.L6:
+ 135              		.align	2
+ 136              	.L5:
+ 137 0054 00040240 		.word	1073873920
+ 138 0058 00000000 		.word	hspi2
+ 139 005c 00000000 		.word	.LC0
+ 140              		.cfi_endproc
+ 141              	.LFE139:
+ 143              		.section	.text.LIS2MDL_Write,"ax",%progbits
+ 144              		.align	1
+ 145              		.global	LIS2MDL_Write
+ 146              		.syntax unified
+ 147              		.thumb
+ 148              		.thumb_func
+ 150              	LIS2MDL_Write:
+ 151              	.LVL13:
+ 152              	.LFB140:
+  29:Core/Src/lis2mdl.c **** 
+  30:Core/Src/lis2mdl.c **** HAL_StatusTypeDef LIS2MDL_Write(uint8_t reg, uint8_t val) {
+ 153              		.loc 1 30 59 is_stmt 1 view -0
+ 154              		.cfi_startproc
+ 155              		@ args = 0, pretend = 0, frame = 8
+ 156              		@ frame_needed = 0, uses_anonymous_args = 0
+ 157              		.loc 1 30 59 is_stmt 0 view .LVU26
+ 158 0000 10B5     		push	{r4, lr}
+ 159              	.LCFI4:
+ 160              		.cfi_def_cfa_offset 8
+ 161              		.cfi_offset 4, -8
+ 162              		.cfi_offset 14, -4
+ 163 0002 82B0     		sub	sp, sp, #8
+ 164              	.LCFI5:
+ 165              		.cfi_def_cfa_offset 16
+  31:Core/Src/lis2mdl.c **** 	// Write command and value
+  32:Core/Src/lis2mdl.c **** 	uint8_t tx[2] = {reg & 0x7F, val };
+ 166              		.loc 1 32 2 is_stmt 1 view .LVU27
+ 167              		.loc 1 32 23 is_stmt 0 view .LVU28
+ 168 0004 00F07F00 		and	r0, r0, #127
+ 169              	.LVL14:
+ 170              		.loc 1 32 10 view .LVU29
+ 171 0008 8DF80400 		strb	r0, [sp, #4]
+ 172 000c 8DF80510 		strb	r1, [sp, #5]
+  33:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_LOW();
+ 173              		.loc 1 33 2 is_stmt 1 view .LVU30
+ 174              	.LBB16:
+ 175              	.LBI16:
+   9:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_RESET);
+ 176              		.loc 1 9 20 view .LVU31
+ 177              	.LBB17:
+  10:Core/Src/lis2mdl.c **** }
+ 178              		.loc 1 10 2 view .LVU32
+ 179 0010 0022     		movs	r2, #0
+ 180 0012 4021     		movs	r1, #64
+ 181              	.LVL15:
+  10:Core/Src/lis2mdl.c **** }
+ 182              		.loc 1 10 2 is_stmt 0 view .LVU33
+ 183 0014 0B48     		ldr	r0, .L11
+ARM GAS  /tmp/ccXQSXhk.s 			page 5
 
 
- 187              	.LVL16:
- 188 0028 0546     		mov	r5, r0
- 189              	.LVL17:
-  32:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 190              		.loc 1 32 2 is_stmt 1 view .LVU35
- 191              	.LBB18:
- 192              	.LBI18:
-  12:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
- 193              		.loc 1 12 20 view .LVU36
- 194              	.LBB19:
-  13:Core/Src/lis2mdl.c **** }
- 195              		.loc 1 13 2 view .LVU37
- 196 002a 0122     		movs	r2, #1
- 197 002c 4021     		movs	r1, #64
- 198 002e 2046     		mov	r0, r4
- 199 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 200              	.LVL18:
- 201              	.LBE19:
- 202              	.LBE18:
-  33:Core/Src/lis2mdl.c **** 	return status;
- 203              		.loc 1 33 2 view .LVU38
-  34:Core/Src/lis2mdl.c **** }
- 204              		.loc 1 34 1 is_stmt 0 view .LVU39
- 205 0034 2846     		mov	r0, r5
- 206 0036 03B0     		add	sp, sp, #12
- 207              	.LCFI6:
- 208              		.cfi_def_cfa_offset 12
- 209              		@ sp needed
- 210 0038 30BD     		pop	{r4, r5, pc}
- 211              	.LVL19:
- 212              	.L10:
- 213              		.loc 1 34 1 view .LVU40
- 214 003a 00BF     		.align	2
- 215              	.L9:
- 216 003c 00040240 		.word	1073873920
- 217 0040 00000000 		.word	hspi2
- 218              		.cfi_endproc
- 219              	.LFE137:
- 221              		.section	.text.LIS2MDL_Init,"ax",%progbits
- 222              		.align	1
- 223              		.global	LIS2MDL_Init
- 224              		.syntax unified
- 225              		.thumb
- 226              		.thumb_func
- 228              	LIS2MDL_Init:
- 229              	.LFB138:
-  35:Core/Src/lis2mdl.c **** 
-  36:Core/Src/lis2mdl.c **** int LIS2MDL_Init() {
- 230              		.loc 1 36 20 is_stmt 1 view -0
- 231              		.cfi_startproc
- 232              		@ args = 0, pretend = 0, frame = 8
- 233              		@ frame_needed = 0, uses_anonymous_args = 0
- 234 0000 00B5     		push	{lr}
- 235              	.LCFI7:
- 236              		.cfi_def_cfa_offset 4
- 237              		.cfi_offset 14, -4
- 238 0002 83B0     		sub	sp, sp, #12
-ARM GAS  /tmp/ccKa5HX9.s 			page 6
-
-
- 239              	.LCFI8:
- 240              		.cfi_def_cfa_offset 16
+ 184 0016 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 185              	.LVL16:
+  10:Core/Src/lis2mdl.c **** }
+ 186              		.loc 1 10 2 view .LVU34
+ 187              	.LBE17:
+ 188              	.LBE16:
+  34:Core/Src/lis2mdl.c **** 	HAL_StatusTypeDef status = HAL_SPI_Transmit(&hspi2, tx, 2, 10);
+ 189              		.loc 1 34 2 is_stmt 1 view .LVU35
+ 190              		.loc 1 34 29 is_stmt 0 view .LVU36
+ 191 001a 0A23     		movs	r3, #10
+ 192 001c 0222     		movs	r2, #2
+ 193 001e 01A9     		add	r1, sp, #4
+ 194 0020 0948     		ldr	r0, .L11+4
+ 195 0022 FFF7FEFF 		bl	HAL_SPI_Transmit
+ 196              	.LVL17:
+  35:Core/Src/lis2mdl.c **** 	if (status != HAL_OK)
+ 197              		.loc 1 35 2 is_stmt 1 view .LVU37
+ 198              		.loc 1 35 5 is_stmt 0 view .LVU38
+ 199 0026 0446     		mov	r4, r0
+ 200 0028 38B9     		cbnz	r0, .L10
+ 201              	.LVL18:
+ 202              	.L8:
+  36:Core/Src/lis2mdl.c **** 		printf("HAL status: %d\r\n", status);
   37:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
- 241              		.loc 1 37 2 view .LVU42
- 242              	.LBB20:
- 243              	.LBI20:
-  12:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
- 244              		.loc 1 12 20 view .LVU43
- 245              	.LBB21:
-  13:Core/Src/lis2mdl.c **** }
- 246              		.loc 1 13 2 view .LVU44
- 247 0004 0122     		movs	r2, #1
- 248 0006 4021     		movs	r1, #64
- 249 0008 1348     		ldr	r0, .L15
- 250 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 251              	.LVL20:
- 252              	.LBE21:
- 253              	.LBE20:
-  38:Core/Src/lis2mdl.c **** 	HAL_Delay(20);
- 254              		.loc 1 38 2 view .LVU45
- 255 000e 1420     		movs	r0, #20
- 256 0010 FFF7FEFF 		bl	HAL_Delay
- 257              	.LVL21:
-  39:Core/Src/lis2mdl.c **** 
-  40:Core/Src/lis2mdl.c **** 	// Soft reset and then disable i2c, has error correction and enables spi on pin 7
-  41:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_A, 0x20); // SOFT_RST
- 258              		.loc 1 41 2 view .LVU46
- 259 0014 2021     		movs	r1, #32
- 260 0016 6020     		movs	r0, #96
- 261 0018 FFF7FEFF 		bl	LIS2MDL_Write
- 262              	.LVL22:
-  42:Core/Src/lis2mdl.c **** 	HAL_Delay(5);
- 263              		.loc 1 42 2 view .LVU47
- 264 001c 0520     		movs	r0, #5
- 265 001e FFF7FEFF 		bl	HAL_Delay
- 266              	.LVL23:
-  43:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_C, 0x34); // I2C_DIS | BDU | 4WSPI
- 267              		.loc 1 43 2 view .LVU48
- 268 0022 3421     		movs	r1, #52
- 269 0024 6220     		movs	r0, #98
- 270 0026 FFF7FEFF 		bl	LIS2MDL_Write
- 271              	.LVL24:
-  44:Core/Src/lis2mdl.c **** 	
-  45:Core/Src/lis2mdl.c **** 	// Makes sure correct who am i is returned. if incorrect this is the wrong chip
-  46:Core/Src/lis2mdl.c **** 	uint8_t id = 0;
- 272              		.loc 1 46 2 view .LVU49
- 273              		.loc 1 46 10 is_stmt 0 view .LVU50
- 274 002a 0023     		movs	r3, #0
- 275 002c 8DF80730 		strb	r3, [sp, #7]
-  47:Core/Src/lis2mdl.c **** 	if (LIS2MDL_Read(WHO_AM_I, &id, 1) != HAL_OK || id != 0x40) return -1;
- 276              		.loc 1 47 2 is_stmt 1 view .LVU51
- 277              		.loc 1 47 6 is_stmt 0 view .LVU52
- 278 0030 0122     		movs	r2, #1
- 279 0032 0DF10701 		add	r1, sp, #7
- 280 0036 4F20     		movs	r0, #79
- 281 0038 FFF7FEFF 		bl	LIS2MDL_Read
- 282              	.LVL25:
-ARM GAS  /tmp/ccKa5HX9.s 			page 7
+ 203              		.loc 1 37 2 is_stmt 1 view .LVU39
+ 204              	.LBB18:
+ 205              	.LBI18:
+  13:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
+ 206              		.loc 1 13 20 view .LVU40
+ 207              	.LBB19:
+  14:Core/Src/lis2mdl.c **** }
+ 208              		.loc 1 14 2 view .LVU41
+ 209 002a 0122     		movs	r2, #1
+ 210 002c 4021     		movs	r1, #64
+ 211 002e 0548     		ldr	r0, .L11
+ 212 0030 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 213              	.LVL19:
+ 214              	.LBE19:
+ 215              	.LBE18:
+  38:Core/Src/lis2mdl.c **** 	return status;
+ 216              		.loc 1 38 2 view .LVU42
+  39:Core/Src/lis2mdl.c **** }
+ 217              		.loc 1 39 1 is_stmt 0 view .LVU43
+ 218 0034 2046     		mov	r0, r4
+ 219 0036 02B0     		add	sp, sp, #8
+ 220              	.LCFI6:
+ 221              		.cfi_remember_state
+ 222              		.cfi_def_cfa_offset 8
+ 223              		@ sp needed
+ 224 0038 10BD     		pop	{r4, pc}
+ 225              	.LVL20:
+ 226              	.L10:
+ 227              	.LCFI7:
+ 228              		.cfi_restore_state
+  36:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+ 229              		.loc 1 36 3 is_stmt 1 view .LVU44
+ 230 003a 0146     		mov	r1, r0
+ARM GAS  /tmp/ccXQSXhk.s 			page 6
 
 
- 283              		.loc 1 47 5 discriminator 1 view .LVU53
- 284 003c 18B9     		cbnz	r0, .L12
- 285              		.loc 1 47 53 discriminator 2 view .LVU54
- 286 003e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
- 287              		.loc 1 47 47 discriminator 2 view .LVU55
- 288 0042 402B     		cmp	r3, #64
- 289 0044 03D0     		beq	.L13
- 290              	.L12:
- 291              		.loc 1 47 62 is_stmt 1 discriminator 3 view .LVU56
- 292              		.loc 1 47 69 is_stmt 0 discriminator 5 view .LVU57
- 293 0046 4FF0FF30 		mov	r0, #-1
- 294              	.L11:
-  48:Core/Src/lis2mdl.c **** 
-  49:Core/Src/lis2mdl.c **** 	// Enables temperature compensation, 100 Hz output data rate, Continous mode (data will be placed 
-  50:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_A, 0x8C); // COMP_TEMP_EN | ODR1 | ODR1
-  51:Core/Src/lis2mdl.c **** }
- 295              		.loc 1 51 1 view .LVU58
- 296 004a 03B0     		add	sp, sp, #12
- 297              	.LCFI9:
- 298              		.cfi_remember_state
- 299              		.cfi_def_cfa_offset 4
- 300              		@ sp needed
- 301 004c 00BD     		pop	{pc}
- 302              	.L13:
- 303              	.LCFI10:
- 304              		.cfi_restore_state
-  50:Core/Src/lis2mdl.c **** }
- 305              		.loc 1 50 2 is_stmt 1 view .LVU59
- 306 004e 8C21     		movs	r1, #140
- 307 0050 6020     		movs	r0, #96
- 308 0052 FFF7FEFF 		bl	LIS2MDL_Write
- 309              	.LVL26:
- 310              		.loc 1 51 1 is_stmt 0 view .LVU60
- 311 0056 F8E7     		b	.L11
- 312              	.L16:
- 313              		.align	2
- 314              	.L15:
- 315 0058 00040240 		.word	1073873920
- 316              		.cfi_endproc
- 317              	.LFE138:
- 319              		.section	.text.LIS2MDL_Read_mgauss,"ax",%progbits
- 320              		.align	1
- 321              		.global	LIS2MDL_Read_mgauss
- 322              		.syntax unified
- 323              		.thumb
- 324              		.thumb_func
- 326              	LIS2MDL_Read_mgauss:
- 327              	.LVL27:
- 328              	.LFB139:
-  52:Core/Src/lis2mdl.c **** 
-  53:Core/Src/lis2mdl.c **** // Read data in milligauss
-  54:Core/Src/lis2mdl.c **** int LIS2MDL_Read_mgauss(float xyz[3]) {
- 329              		.loc 1 54 39 is_stmt 1 view -0
- 330              		.cfi_startproc
- 331              		@ args = 0, pretend = 0, frame = 8
- 332              		@ frame_needed = 0, uses_anonymous_args = 0
- 333              		.loc 1 54 39 is_stmt 0 view .LVU62
-ARM GAS  /tmp/ccKa5HX9.s 			page 8
+ 231 003c 0348     		ldr	r0, .L11+8
+ 232              	.LVL21:
+  36:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+ 233              		.loc 1 36 3 is_stmt 0 view .LVU45
+ 234 003e FFF7FEFF 		bl	printf
+ 235              	.LVL22:
+ 236 0042 F2E7     		b	.L8
+ 237              	.L12:
+ 238              		.align	2
+ 239              	.L11:
+ 240 0044 00040240 		.word	1073873920
+ 241 0048 00000000 		.word	hspi2
+ 242 004c 00000000 		.word	.LC0
+ 243              		.cfi_endproc
+ 244              	.LFE140:
+ 246              		.section	.rodata.LIS2MDL_Init.str1.4,"aMS",%progbits,1
+ 247              		.align	2
+ 248              	.LC1:
+ 249 0000 57484F5F 		.ascii	"WHO_AM_I incorrect: %d\015\012\000"
+ 249      414D5F49 
+ 249      20696E63 
+ 249      6F727265 
+ 249      63743A20 
+ 250 0019 000000   		.align	2
+ 251              	.LC2:
+ 252 001c 57484F5F 		.ascii	"WHO_AM_I correct\015\000"
+ 252      414D5F49 
+ 252      20636F72 
+ 252      72656374 
+ 252      0D00
+ 253              		.section	.text.LIS2MDL_Init,"ax",%progbits
+ 254              		.align	1
+ 255              		.global	LIS2MDL_Init
+ 256              		.syntax unified
+ 257              		.thumb
+ 258              		.thumb_func
+ 260              	LIS2MDL_Init:
+ 261              	.LFB141:
+  40:Core/Src/lis2mdl.c **** 
+  41:Core/Src/lis2mdl.c **** int LIS2MDL_Init() {
+ 262              		.loc 1 41 20 is_stmt 1 view -0
+ 263              		.cfi_startproc
+ 264              		@ args = 0, pretend = 0, frame = 8
+ 265              		@ frame_needed = 0, uses_anonymous_args = 0
+ 266 0000 00B5     		push	{lr}
+ 267              	.LCFI8:
+ 268              		.cfi_def_cfa_offset 4
+ 269              		.cfi_offset 14, -4
+ 270 0002 83B0     		sub	sp, sp, #12
+ 271              	.LCFI9:
+ 272              		.cfi_def_cfa_offset 16
+  42:Core/Src/lis2mdl.c **** 	LIS2MDL_CS_HIGH();
+ 273              		.loc 1 42 2 view .LVU47
+ 274              	.LBB20:
+ 275              	.LBI20:
+  13:Core/Src/lis2mdl.c **** 	HAL_GPIO_WritePin(LIS2MDL_CS_PORT, LIS2MDL_CS_PIN, GPIO_PIN_SET);
+ 276              		.loc 1 13 20 view .LVU48
+ARM GAS  /tmp/ccXQSXhk.s 			page 7
 
 
- 334 0000 10B5     		push	{r4, lr}
- 335              	.LCFI11:
- 336              		.cfi_def_cfa_offset 8
- 337              		.cfi_offset 4, -8
- 338              		.cfi_offset 14, -4
- 339 0002 82B0     		sub	sp, sp, #8
- 340              	.LCFI12:
- 341              		.cfi_def_cfa_offset 16
- 342 0004 0446     		mov	r4, r0
-  55:Core/Src/lis2mdl.c **** 	// Read all output registers into the 6 bytes
-  56:Core/Src/lis2mdl.c **** 	uint8_t b[6];
- 343              		.loc 1 56 2 is_stmt 1 view .LVU63
-  57:Core/Src/lis2mdl.c **** 	if (LIS2MDL_Read(OUTX_L_REG, b, 6) != HAL_OK) return -1;
- 344              		.loc 1 57 2 view .LVU64
- 345              		.loc 1 57 6 is_stmt 0 view .LVU65
- 346 0006 0622     		movs	r2, #6
- 347 0008 6946     		mov	r1, sp
- 348 000a 6820     		movs	r0, #104
- 349              	.LVL28:
- 350              		.loc 1 57 6 view .LVU66
- 351 000c FFF7FEFF 		bl	LIS2MDL_Read
- 352              	.LVL29:
- 353              		.loc 1 57 5 discriminator 1 view .LVU67
- 354 0010 00BB     		cbnz	r0, .L21
- 355              	.LBB22:
-  58:Core/Src/lis2mdl.c **** 	// convert 16 bit numbers to floats
-  59:Core/Src/lis2mdl.c **** 	for (int i = 0; i < 3; i++)
- 356              		.loc 1 59 11 view .LVU68
- 357 0012 0246     		mov	r2, r0
- 358 0014 19E0     		b	.L19
- 359              	.LVL30:
- 360              	.L20:
-  60:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
- 361              		.loc 1 60 3 is_stmt 1 view .LVU69
- 362              		.loc 1 60 25 is_stmt 0 view .LVU70
- 363 0016 5100     		lsls	r1, r2, #1
- 364              		.loc 1 60 23 view .LVU71
- 365 0018 02AB     		add	r3, sp, #8
- 366 001a 03EB4203 		add	r3, r3, r2, lsl #1
- 367 001e 13F8083C 		ldrb	r3, [r3, #-8]	@ zero_extendqisi2
- 368              		.loc 1 60 33 view .LVU72
- 369 0022 0931     		adds	r1, r1, #9
- 370 0024 6944     		add	r1, sp, r1
- 371 0026 11F8081C 		ldrb	r1, [r1, #-8]	@ zero_extendqisi2
- 372              		.loc 1 60 12 view .LVU73
- 373 002a 43EA0123 		orr	r3, r3, r1, lsl #8
- 374 002e 1BB2     		sxth	r3, r3
- 375 0030 07EE903A 		vmov	s15, r3	@ int
- 376              		.loc 1 60 6 view .LVU74
- 377 0034 04EB8203 		add	r3, r4, r2, lsl #2
- 378              		.loc 1 60 48 view .LVU75
- 379 0038 F8EEE77A 		vcvt.f32.s32	s15, s15
- 380 003c B7EE087A 		vmov.f32	s14, #1.5e+0
- 381 0040 67EE877A 		vmul.f32	s15, s15, s14
- 382              		.loc 1 60 10 view .LVU76
- 383 0044 C3ED007A 		vstr.32	s15, [r3]
-  59:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
-ARM GAS  /tmp/ccKa5HX9.s 			page 9
+ 277              	.LBB21:
+  14:Core/Src/lis2mdl.c **** }
+ 278              		.loc 1 14 2 view .LVU49
+ 279 0004 0122     		movs	r2, #1
+ 280 0006 4021     		movs	r1, #64
+ 281 0008 1748     		ldr	r0, .L17
+ 282 000a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 283              	.LVL23:
+ 284              	.LBE21:
+ 285              	.LBE20:
+  43:Core/Src/lis2mdl.c **** 	HAL_Delay(20);
+ 286              		.loc 1 43 2 view .LVU50
+ 287 000e 1420     		movs	r0, #20
+ 288 0010 FFF7FEFF 		bl	HAL_Delay
+ 289              	.LVL24:
+  44:Core/Src/lis2mdl.c **** 
+  45:Core/Src/lis2mdl.c **** 	// Soft reset and then disable i2c, has error correction and enables spi on pin 7
+  46:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_A, 0x20); // SOFT_RST
+ 290              		.loc 1 46 2 view .LVU51
+ 291 0014 2021     		movs	r1, #32
+ 292 0016 6020     		movs	r0, #96
+ 293 0018 FFF7FEFF 		bl	LIS2MDL_Write
+ 294              	.LVL25:
+  47:Core/Src/lis2mdl.c **** 	HAL_Delay(5);
+ 295              		.loc 1 47 2 view .LVU52
+ 296 001c 0520     		movs	r0, #5
+ 297 001e FFF7FEFF 		bl	HAL_Delay
+ 298              	.LVL26:
+  48:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_C, 0x34); // I2C_DIS | BDU | 4WSPI
+ 299              		.loc 1 48 2 view .LVU53
+ 300 0022 3421     		movs	r1, #52
+ 301 0024 6220     		movs	r0, #98
+ 302 0026 FFF7FEFF 		bl	LIS2MDL_Write
+ 303              	.LVL27:
+  49:Core/Src/lis2mdl.c **** 	
+  50:Core/Src/lis2mdl.c **** 	// Makes sure correct who am i is returned. if incorrect this is the wrong chip
+  51:Core/Src/lis2mdl.c **** 	uint8_t id = 0;
+ 304              		.loc 1 51 2 view .LVU54
+ 305              		.loc 1 51 10 is_stmt 0 view .LVU55
+ 306 002a 0023     		movs	r3, #0
+ 307 002c 8DF80730 		strb	r3, [sp, #7]
+  52:Core/Src/lis2mdl.c **** 	if (LIS2MDL_Read(WHO_AM_I, &id, 1) != HAL_OK || id != 0x40) {
+ 308              		.loc 1 52 2 is_stmt 1 view .LVU56
+ 309              		.loc 1 52 6 is_stmt 0 view .LVU57
+ 310 0030 0122     		movs	r2, #1
+ 311 0032 0DF10701 		add	r1, sp, #7
+ 312 0036 4F20     		movs	r0, #79
+ 313 0038 FFF7FEFF 		bl	LIS2MDL_Read
+ 314              	.LVL28:
+ 315              		.loc 1 52 5 discriminator 1 view .LVU58
+ 316 003c 18B9     		cbnz	r0, .L14
+ 317              		.loc 1 52 53 discriminator 2 view .LVU59
+ 318 003e 9DF80730 		ldrb	r3, [sp, #7]	@ zero_extendqisi2
+ 319              		.loc 1 52 47 discriminator 2 view .LVU60
+ 320 0042 402B     		cmp	r3, #64
+ 321 0044 08D0     		beq	.L15
+ 322              	.L14:
+ARM GAS  /tmp/ccXQSXhk.s 			page 8
 
 
- 384              		.loc 1 59 26 is_stmt 1 discriminator 1 view .LVU77
- 385 0048 0132     		adds	r2, r2, #1
- 386              	.LVL31:
- 387              	.L19:
-  59:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
- 388              		.loc 1 59 20 discriminator 2 view .LVU78
- 389 004a 022A     		cmp	r2, #2
- 390 004c E3DD     		ble	.L20
- 391              	.LBE22:
-  61:Core/Src/lis2mdl.c **** 	return 0;
- 392              		.loc 1 61 9 is_stmt 0 view .LVU79
- 393 004e 0020     		movs	r0, #0
- 394              	.LVL32:
- 395              	.L17:
-  62:Core/Src/lis2mdl.c **** }
- 396              		.loc 1 62 1 view .LVU80
- 397 0050 02B0     		add	sp, sp, #8
- 398              	.LCFI13:
- 399              		.cfi_remember_state
- 400              		.cfi_def_cfa_offset 8
- 401              		@ sp needed
- 402 0052 10BD     		pop	{r4, pc}
- 403              	.LVL33:
- 404              	.L21:
- 405              	.LCFI14:
- 406              		.cfi_restore_state
-  57:Core/Src/lis2mdl.c **** 	// convert 16 bit numbers to floats
- 407              		.loc 1 57 55 discriminator 2 view .LVU81
- 408 0054 4FF0FF30 		mov	r0, #-1
- 409 0058 FAE7     		b	.L17
- 410              		.cfi_endproc
- 411              	.LFE139:
- 413              		.text
- 414              	.Letext0:
- 415              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
- 416              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
- 417              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
- 418              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
- 419              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
- 420              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
- 421              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
- 422              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
- 423              		.file 10 "Core/Inc/lis2mdl.h"
-ARM GAS  /tmp/ccKa5HX9.s 			page 10
+  53:Core/Src/lis2mdl.c **** 		printf("WHO_AM_I incorrect: %d\r\n", id);
+ 323              		.loc 1 53 3 is_stmt 1 view .LVU61
+ 324 0046 9DF80710 		ldrb	r1, [sp, #7]	@ zero_extendqisi2
+ 325 004a 0848     		ldr	r0, .L17+4
+ 326 004c FFF7FEFF 		bl	printf
+ 327              	.LVL29:
+  54:Core/Src/lis2mdl.c **** 		return -1;
+ 328              		.loc 1 54 3 view .LVU62
+ 329              		.loc 1 54 10 is_stmt 0 discriminator 2 view .LVU63
+ 330 0050 4FF0FF30 		mov	r0, #-1
+ 331              	.L13:
+  55:Core/Src/lis2mdl.c **** 	}
+  56:Core/Src/lis2mdl.c **** 	printf("WHO_AM_I correct\r\n");
+  57:Core/Src/lis2mdl.c **** 
+  58:Core/Src/lis2mdl.c **** 	// Enables temperature compensation, 100 Hz output data rate, Continous mode (data will be placed 
+  59:Core/Src/lis2mdl.c **** 	LIS2MDL_Write(CFG_REG_A, 0x8C); // COMP_TEMP_EN | ODR1 | ODR1
+  60:Core/Src/lis2mdl.c **** }
+ 332              		.loc 1 60 1 view .LVU64
+ 333 0054 03B0     		add	sp, sp, #12
+ 334              	.LCFI10:
+ 335              		.cfi_remember_state
+ 336              		.cfi_def_cfa_offset 4
+ 337              		@ sp needed
+ 338 0056 00BD     		pop	{pc}
+ 339              	.L15:
+ 340              	.LCFI11:
+ 341              		.cfi_restore_state
+  56:Core/Src/lis2mdl.c **** 
+ 342              		.loc 1 56 2 is_stmt 1 view .LVU65
+ 343 0058 0548     		ldr	r0, .L17+8
+ 344 005a FFF7FEFF 		bl	puts
+ 345              	.LVL30:
+  59:Core/Src/lis2mdl.c **** }
+ 346              		.loc 1 59 2 view .LVU66
+ 347 005e 8C21     		movs	r1, #140
+ 348 0060 6020     		movs	r0, #96
+ 349 0062 FFF7FEFF 		bl	LIS2MDL_Write
+ 350              	.LVL31:
+ 351              		.loc 1 60 1 is_stmt 0 view .LVU67
+ 352 0066 F5E7     		b	.L13
+ 353              	.L18:
+ 354              		.align	2
+ 355              	.L17:
+ 356 0068 00040240 		.word	1073873920
+ 357 006c 00000000 		.word	.LC1
+ 358 0070 1C000000 		.word	.LC2
+ 359              		.cfi_endproc
+ 360              	.LFE141:
+ 362              		.section	.text.LIS2MDL_Read_mgauss,"ax",%progbits
+ 363              		.align	1
+ 364              		.global	LIS2MDL_Read_mgauss
+ 365              		.syntax unified
+ 366              		.thumb
+ 367              		.thumb_func
+ 369              	LIS2MDL_Read_mgauss:
+ 370              	.LVL32:
+ 371              	.LFB142:
+ARM GAS  /tmp/ccXQSXhk.s 			page 9
+
+
+  61:Core/Src/lis2mdl.c **** 
+  62:Core/Src/lis2mdl.c **** // Read data in milligauss
+  63:Core/Src/lis2mdl.c **** int LIS2MDL_Read_mgauss(float xyz[3]) {
+ 372              		.loc 1 63 39 is_stmt 1 view -0
+ 373              		.cfi_startproc
+ 374              		@ args = 0, pretend = 0, frame = 8
+ 375              		@ frame_needed = 0, uses_anonymous_args = 0
+ 376              		.loc 1 63 39 is_stmt 0 view .LVU69
+ 377 0000 10B5     		push	{r4, lr}
+ 378              	.LCFI12:
+ 379              		.cfi_def_cfa_offset 8
+ 380              		.cfi_offset 4, -8
+ 381              		.cfi_offset 14, -4
+ 382 0002 82B0     		sub	sp, sp, #8
+ 383              	.LCFI13:
+ 384              		.cfi_def_cfa_offset 16
+ 385 0004 0446     		mov	r4, r0
+  64:Core/Src/lis2mdl.c **** 	// Read all output registers into the 6 bytes
+  65:Core/Src/lis2mdl.c **** 	uint8_t b[6];
+ 386              		.loc 1 65 2 is_stmt 1 view .LVU70
+  66:Core/Src/lis2mdl.c **** 	if (LIS2MDL_Read(OUTX_L_REG, b, 6) != HAL_OK) return -1;
+ 387              		.loc 1 66 2 view .LVU71
+ 388              		.loc 1 66 6 is_stmt 0 view .LVU72
+ 389 0006 0622     		movs	r2, #6
+ 390 0008 6946     		mov	r1, sp
+ 391 000a 6820     		movs	r0, #104
+ 392              	.LVL33:
+ 393              		.loc 1 66 6 view .LVU73
+ 394 000c FFF7FEFF 		bl	LIS2MDL_Read
+ 395              	.LVL34:
+ 396              		.loc 1 66 5 discriminator 1 view .LVU74
+ 397 0010 00BB     		cbnz	r0, .L23
+ 398              	.LBB22:
+  67:Core/Src/lis2mdl.c **** 	// convert 16 bit numbers to floats
+  68:Core/Src/lis2mdl.c **** 	for (int i = 0; i < 3; i++)
+ 399              		.loc 1 68 11 view .LVU75
+ 400 0012 0246     		mov	r2, r0
+ 401 0014 19E0     		b	.L21
+ 402              	.LVL35:
+ 403              	.L22:
+  69:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
+ 404              		.loc 1 69 3 is_stmt 1 view .LVU76
+ 405              		.loc 1 69 25 is_stmt 0 view .LVU77
+ 406 0016 5100     		lsls	r1, r2, #1
+ 407              		.loc 1 69 23 view .LVU78
+ 408 0018 02AB     		add	r3, sp, #8
+ 409 001a 03EB4203 		add	r3, r3, r2, lsl #1
+ 410 001e 13F8083C 		ldrb	r3, [r3, #-8]	@ zero_extendqisi2
+ 411              		.loc 1 69 33 view .LVU79
+ 412 0022 0931     		adds	r1, r1, #9
+ 413 0024 6944     		add	r1, sp, r1
+ 414 0026 11F8081C 		ldrb	r1, [r1, #-8]	@ zero_extendqisi2
+ 415              		.loc 1 69 12 view .LVU80
+ 416 002a 43EA0123 		orr	r3, r3, r1, lsl #8
+ 417 002e 1BB2     		sxth	r3, r3
+ 418 0030 07EE903A 		vmov	s15, r3	@ int
+ 419              		.loc 1 69 6 view .LVU81
+ARM GAS  /tmp/ccXQSXhk.s 			page 10
+
+
+ 420 0034 04EB8203 		add	r3, r4, r2, lsl #2
+ 421              		.loc 1 69 48 view .LVU82
+ 422 0038 F8EEE77A 		vcvt.f32.s32	s15, s15
+ 423 003c B7EE087A 		vmov.f32	s14, #1.5e+0
+ 424 0040 67EE877A 		vmul.f32	s15, s15, s14
+ 425              		.loc 1 69 10 view .LVU83
+ 426 0044 C3ED007A 		vstr.32	s15, [r3]
+  68:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
+ 427              		.loc 1 68 26 is_stmt 1 discriminator 1 view .LVU84
+ 428 0048 0132     		adds	r2, r2, #1
+ 429              	.LVL36:
+ 430              	.L21:
+  68:Core/Src/lis2mdl.c **** 		xyz[i] = (int16_t)(b[2*i] | (b[2*i+1] << 8)) * 1.5f;   // mG
+ 431              		.loc 1 68 20 discriminator 2 view .LVU85
+ 432 004a 022A     		cmp	r2, #2
+ 433 004c E3DD     		ble	.L22
+ 434              	.LBE22:
+  70:Core/Src/lis2mdl.c **** 	return 0;
+ 435              		.loc 1 70 9 is_stmt 0 view .LVU86
+ 436 004e 0020     		movs	r0, #0
+ 437              	.LVL37:
+ 438              	.L19:
+  71:Core/Src/lis2mdl.c **** }
+ 439              		.loc 1 71 1 view .LVU87
+ 440 0050 02B0     		add	sp, sp, #8
+ 441              	.LCFI14:
+ 442              		.cfi_remember_state
+ 443              		.cfi_def_cfa_offset 8
+ 444              		@ sp needed
+ 445 0052 10BD     		pop	{r4, pc}
+ 446              	.LVL38:
+ 447              	.L23:
+ 448              	.LCFI15:
+ 449              		.cfi_restore_state
+  66:Core/Src/lis2mdl.c **** 	// convert 16 bit numbers to floats
+ 450              		.loc 1 66 55 discriminator 2 view .LVU88
+ 451 0054 4FF0FF30 		mov	r0, #-1
+ 452 0058 FAE7     		b	.L19
+ 453              		.cfi_endproc
+ 454              	.LFE142:
+ 456              		.text
+ 457              	.Letext0:
+ 458              		.file 2 "/usr/arm-none-eabi/include/machine/_default_types.h"
+ 459              		.file 3 "/usr/arm-none-eabi/include/sys/_stdint.h"
+ 460              		.file 4 "Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f411xe.h"
+ 461              		.file 5 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_def.h"
+ 462              		.file 6 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_gpio.h"
+ 463              		.file 7 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_dma.h"
+ 464              		.file 8 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h"
+ 465              		.file 9 "Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h"
+ 466              		.file 10 "/usr/arm-none-eabi/include/stdio.h"
+ 467              		.file 11 "Core/Inc/lis2mdl.h"
+ 468              		.file 12 "<built-in>"
+ARM GAS  /tmp/ccXQSXhk.s 			page 11
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 lis2mdl.c
-     /tmp/ccKa5HX9.s:21     .text.LIS2MDL_Read:00000000 $t
-     /tmp/ccKa5HX9.s:27     .text.LIS2MDL_Read:00000000 LIS2MDL_Read
-     /tmp/ccKa5HX9.s:127    .text.LIS2MDL_Read:0000004c $d
-     /tmp/ccKa5HX9.s:133    .text.LIS2MDL_Write:00000000 $t
-     /tmp/ccKa5HX9.s:139    .text.LIS2MDL_Write:00000000 LIS2MDL_Write
-     /tmp/ccKa5HX9.s:216    .text.LIS2MDL_Write:0000003c $d
-     /tmp/ccKa5HX9.s:222    .text.LIS2MDL_Init:00000000 $t
-     /tmp/ccKa5HX9.s:228    .text.LIS2MDL_Init:00000000 LIS2MDL_Init
-     /tmp/ccKa5HX9.s:315    .text.LIS2MDL_Init:00000058 $d
-     /tmp/ccKa5HX9.s:320    .text.LIS2MDL_Read_mgauss:00000000 $t
-     /tmp/ccKa5HX9.s:326    .text.LIS2MDL_Read_mgauss:00000000 LIS2MDL_Read_mgauss
+     /tmp/ccXQSXhk.s:21     .rodata.LIS2MDL_Read.str1.4:00000000 $d
+     /tmp/ccXQSXhk.s:25     .text.LIS2MDL_Read:00000000 $t
+     /tmp/ccXQSXhk.s:31     .text.LIS2MDL_Read:00000000 LIS2MDL_Read
+     /tmp/ccXQSXhk.s:137    .text.LIS2MDL_Read:00000054 $d
+     /tmp/ccXQSXhk.s:144    .text.LIS2MDL_Write:00000000 $t
+     /tmp/ccXQSXhk.s:150    .text.LIS2MDL_Write:00000000 LIS2MDL_Write
+     /tmp/ccXQSXhk.s:240    .text.LIS2MDL_Write:00000044 $d
+     /tmp/ccXQSXhk.s:247    .rodata.LIS2MDL_Init.str1.4:00000000 $d
+     /tmp/ccXQSXhk.s:254    .text.LIS2MDL_Init:00000000 $t
+     /tmp/ccXQSXhk.s:260    .text.LIS2MDL_Init:00000000 LIS2MDL_Init
+     /tmp/ccXQSXhk.s:356    .text.LIS2MDL_Init:00000068 $d
+     /tmp/ccXQSXhk.s:363    .text.LIS2MDL_Read_mgauss:00000000 $t
+     /tmp/ccXQSXhk.s:369    .text.LIS2MDL_Read_mgauss:00000000 LIS2MDL_Read_mgauss
 
 UNDEFINED SYMBOLS
 HAL_GPIO_WritePin
 HAL_SPI_Transmit
 HAL_SPI_Receive
+printf
 hspi2
 HAL_Delay
+puts
